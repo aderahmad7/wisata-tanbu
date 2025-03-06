@@ -1,6 +1,5 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/Login";
+import Login from "./pages/Login";
 import DashboardLayout from "./layouts/DashboardLayout";
 import DashboardPage from "./pages/DashboardPage";
 import WisataPage from "./pages/WisataPage";
@@ -17,7 +16,7 @@ const App = () => {
         <Routes>
           <Route index element={<Home />} />
           <Route path="/maps" element={<AppLayout />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<Login />} />
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<DashboardLayout />}>
               <Route path="dashboard" element={<DashboardPage />} />
