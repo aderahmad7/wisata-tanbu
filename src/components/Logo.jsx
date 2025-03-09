@@ -7,6 +7,9 @@ const sizes = {
   medium: css`
     width: 160px;
   `,
+  largeMedium: css`
+    width: 240px;
+  `,
   large: css`
     width: 552px;
   `,
