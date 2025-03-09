@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { wisata, deleteWisata } from "../services/api"; // Tambahkan impor deleteWisata
 import ModalTambahWisata from "../components/ModalTambahWisata";
 import ModalDetailWisata from "../components/ModalDetailWisata";
@@ -15,6 +15,7 @@ const WisataPage = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedWisata, setSelectedWisata] = useState(null);
+  const [isFocused, setIsFocused] = useState(false);
   const itemsPerPage = 6;
 
   const fetchData = async () => {
@@ -153,44 +154,42 @@ const WisataPage = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4 md:mb-0">
-              Data Tempat Wisata
-            </h1>
-            <div className="flex flex-col sm:flex-row w-full md:w-auto gap-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Cari tempat wisata..."
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                />
-                <svg
-                  className="absolute left-3 top-2.5 h-5 w-5 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-200"
-              >
-                Tambah Wisata
-              </button>
-            </div>
-          </div>
+    <div className=" min-h-screen flex-1 max-h-dvh overflow-scroll bg-[#F4F4F4]">
+      <h1 className="ms-14 mt-12 text-3xl font-bold text-[#6A6A6A] mb-10">
+        Semua Wisata
+      </h1>
+      <div className="flex justify-between mx-16">
+        <div className="relative w-80 ">
+          <input
+            type="text"
+            id="search"
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(searchQuery !== "")}
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="px-3 py-4 border rounded-[4px] border-[#0000003a] w-full focus:outline-none focus:border-[#2EB2C2] transition-all duration-300"
+          />
+          <label
+            htmlFor="search"
+            className={`absolute left-3 px-1 bg-[#F4F4F4] transition-all duration-300 
+          ${
+            isFocused || searchQuery
+              ? "-top-2 text-sm text-[#2EB2C2]"
+              : "top-4 text-gray-500 text-base"
+          }`}
+          >
+            Search
+          </label>
+        </div>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-3 py-2 bg-[#2EB2C2] text-white rounded-[8px] text-sm"
+        >
+          Tambah Data
+        </button>
+      </div>
+      <div className="m-8">
+        <div className="bg-white p-6 rounded-2xl shadow-[4px_4px_8px_0px_rgba(0,0,0,0.25)] mb-6 ">
 
           <ModalTambahWisata
             isOpen={isModalOpen}
@@ -234,13 +233,13 @@ const WisataPage = () => {
               Tidak ada tempat wisata yang ditemukan.
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {currentItems.map((item) => (
                 <div
                   key={item.id || `temp-${Date.now()}-${Math.random()}`}
-                  className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300"
+                  className=" bg-white border border-gray-200 rounded-xl overflow-hidden shadow-[3px_4px_3px_0_rgba(0,0,0,0.10)]"
                 >
-                  <div className="relative h-48 bg-gray-100 flex justify-center items-center overflow-hidden">
+                  <div className=" relative h-48 bg-gray-100 flex justify-center items-center overflow-hidden">
                     <img
                       src={
                         item.photo_url?.startsWith("http")
@@ -248,42 +247,23 @@ const WisataPage = () => {
                           : import.meta.env.VITE_IMAGE_URL + item.photo_url
                       }
                       alt={item.place_name}
-                      className="w-full h-full object-contain"
+                      className="w-full h-[191px] object-cover"
                       onError={(e) => {
                         e.target.src =
                           "https://via.placeholder.com/300x200?text=No+Image";
                       }}
                     />
                   </div>
-                  <div className="p-5">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2 truncate">
-                      {item.place_name}
-                    </h3>
-                    <div className="flex items-center text-gray-600 mb-4">
-                      <svg
-                        className="h-5 w-5 mr-1 text-gray-500"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                      </svg>
-                      <span>{item.subdistrict}</span>
+                  <div className="pt-6 px-4 pb-4 ">
+                    <div className="mb-4">
+                      <h3 className="text-2xl font-semibold text-[#1F2937] truncate">
+                        {item.place_name}
+                      </h3>
+                      <span className="text-[#374151]">{item.subdistrict}</span>
                     </div>
                     <button
                       onClick={() => handleDetailClick(item)}
-                      className="w-full bg-blue-50 hover:bg-blue-100 text-blue-600 font-medium py-2 px-4 rounded-lg transition duration-200"
+                      className="px-4 py-3.5 bg-[#2EB2C2] text-white rounded-[8px] text-sm"
                     >
                       Lihat Detail
                     </button>
