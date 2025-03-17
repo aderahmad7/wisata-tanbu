@@ -5,6 +5,7 @@ import {
   Marker,
   Popup,
   LayersControl,
+  useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import geojsonData from "../../data/geojsonData";
@@ -39,6 +40,15 @@ function Map() {
     fetchWisata();
   }, [fetchWisata]);
 
+  function MapEvents({ setIsDetail }) {
+    useMapEvents({
+      click: () => {
+        setIsDetail(false);
+      },
+    });
+    return null;
+  }
+
   const markers = useMemo(
     () =>
       wisata.map((item) => (
@@ -65,7 +75,11 @@ function Map() {
   return (
     <div className="relative flex-1 z-10">
       <SearchField />
-      <DetailCard isDetail={isDetail} setIsDetail={setIsDetail} data={dataDetail} />
+      <DetailCard
+        isDetail={isDetail}
+        setIsDetail={setIsDetail}
+        data={dataDetail}
+      />
 
       {loading ? (
         <div className="flex justify-center items-center h-screen">
@@ -78,6 +92,7 @@ function Map() {
           className="h-full w-full"
           zoomControl={false}
         >
+          <MapEvents setIsDetail={setIsDetail} />
           <LayersControl position="topright">
             <LayersControl.BaseLayer name="Peta" checked>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
