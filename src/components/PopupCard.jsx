@@ -15,7 +15,7 @@ function PopupCard({
       await updateView(dataDetail.id); // Panggil API untuk update ctr
       const updatedData = { ...dataDetail, ctr: dataDetail.ctr + 1 }; // Tambah ctr di local state
       setDataDetail(updatedData); // Perbarui state di Map.jsx
-      setIsDetail((prevIsDetail) => !prevIsDetail);
+      setIsDetail(true);
     } catch (error) {
       console.error("Gagal memperbarui jumlah kunjungan:", error);
     }

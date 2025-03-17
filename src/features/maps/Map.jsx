@@ -65,7 +65,7 @@ function Map() {
   return (
     <div className="relative flex-1 z-10">
       <SearchField />
-      <DetailCard isDetail={isDetail} data={dataDetail} />
+      <DetailCard isDetail={isDetail} setIsDetail={setIsDetail} data={dataDetail} />
 
       {loading ? (
         <div className="flex justify-center items-center h-screen">
