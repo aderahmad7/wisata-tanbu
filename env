@@ -1,7 +1,7 @@
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=
-DB_NAME=uts_egov
+DB_HOST=bzahmnixvwqn0klpjqug-mysql.services.clever-cloud.com
+DB_USER=uhicvucj3nvn6ctv
+DB_PASS=OkDJKv4HRzmFvHoD5Jw2
+DB_NAME=bzahmnixvwqn0klpjqug
 DB_DIALECT=mysql
 JWT_SECRET=adeganteng
 PORT=5000
