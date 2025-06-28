@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export const authMiddleware = (req, res, next) => {
+  console.log("🛡️ authMiddleware jalan");
   const token = req.header("Authorization")?.split(" ")[1];
   if (!token) return res.status(401).json({ message: "Token tidak ditemukan" });
 
