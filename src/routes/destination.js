@@ -21,6 +21,12 @@ router.get("/", authMiddleware, getData);
 router.get("/maps", maps);
 router.get("/count", authMiddleware, countData);
 router.get("/top_visit", authMiddleware, topView);
+router.post("/debug", (req, res) => {
+  console.log("🔥 POST /api/destination/debug");
+  console.log("Method:", req.method);
+  console.log("Body:", req.body);
+  res.status(200).json({ method: req.method, body: req.body });
+});
 router.post(
   "/",
   authMiddleware,
